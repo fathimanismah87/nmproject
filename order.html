@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Order - Sweet Bliss</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Confirm Your Order</h2>
+        <p>Please review your details to ensure everything is perfect!</p>
+
+        <div class="order-summary" id="receipt">
+            <div class="summary-item"><strong>Customer:</strong> <span id="res-name"></span></div>
+            <div class="summary-item"><strong>Phone:</strong> <span id="res-phone"></span></div>
+            <hr>
+            <div class="summary-item"><strong>Flavour:</strong> <span id="res-flavour"></span></div>
+            <div class="summary-item"><strong>Size:</strong> <span id="res-size"></span></div>
+            <div class="summary-item"><strong>Occasion:</strong> <span id="res-occasion"></span></div>
+            <div class="summary-item"><strong>Date:</strong> <span id="res-date"></span></div>
+            <div class="summary-item"><strong>Message:</strong> <span id="res-message"></span></div>
+        </div>
+
+        <div class="button-group">
+            <button onclick="placeOrder()">Place Order Now</button>
+            <button onclick="history.back()" class="secondary-btn" style="background: #f0f0f0; color: #666; margin-top: 12px; box-shadow: none;">Edit My Selection</button>
+        </div>
+    </div>
+
+    <script>
+        // Logic to extract data from the URL and display it
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        document.getElementById('res-name').innerText = urlParams.get('name') || "Not provided";
+        document.getElementById('res-phone').innerText = urlParams.get('phone') || "Not provided";
+        document.getElementById('res-flavour').innerText = urlParams.get('flavour') || "Not selected";
+        document.getElementById('res-size').innerText = urlParams.get('size') ? urlParams.get('size') + " kg" : "Not selected";
+        document.getElementById('res-occasion').innerText = urlParams.get('occasion') || "Not selected";
+        document.getElementById('res-date').innerText = urlParams.get('date') || "Not selected";
+        document.getElementById('res-message').innerText = urlParams.get('message') || "None";
+
+        function placeOrder() {
+            // In a real app, this is where you'd send data to a database
+            alert("🎉 Your order has been placed! We will contact you shortly.");
+            window.location.href = "success.html";
+        }
+    </script>
+
+    <style>
+        /* Extra styles specifically for this page summary */
+        .order-summary {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .summary-item {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .summary-item strong {
+            color: #ff4d88;
+        }
+        hr {
+            border: none;
+            border-top: 1px dashed #ddd;
+            margin: 12px 0;
+        }
+    </style>
+</body>
+</html>

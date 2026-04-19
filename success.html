@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Success</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | Sweet Bliss</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<div class="container">
 
-<h1 class="success">🎉 Order Placed Successfully!</h1>
-<p>Thank you for choosing Sweet Bliss Cakes 💖</p>
+    <div class="container" style="text-align: center;">
+        <div class="success-icon" style="font-size: 60px; margin-bottom: 20px; animation: heartBeat 1.5s infinite;">💖</div>
+        
+        <h1>Sweet Success!</h1>
+        <p class="subtitle" style="margin-bottom: 30px;">Your order has been placed beautifully.</p>
 
-<div class="button-group">
-<a href="index.html">
-<button>Back to Home</button>
-</a>
-</div>
+        <div class="promo-text">
+            <p>Thank you for choosing <strong>Sweet Bliss Cakes</strong>.</p>
+            <p>We are currently preparing your treat with extra love and care. You will receive a notification once it's ready!</p>
+        </div>
 
-</div>
+        <div class="actions" style="margin-top: 40px;">
+            <a href="history.html" style="text-decoration: none;">
+                <button class="order-btn">View My Orders</button>
+            </a>
+            
+            <div class="footer-links" style="margin-top: 25px;">
+                <a href="index.html" style="color: #ff4d88; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 1px;">
+                    RETURN TO SHOP
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Small extra animation for the success page */
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+    </style>
+
 </body>
 </html>

@@ -3,106 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customize Your Cake - Sweet Bliss</title>
+    <title>Order Details - Sweet Bliss</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <div class="container" style="max-width: 650px;"> <h2>Customize Your Cake</h2>
-        <p>Fill in the details to create your perfect treat!</p>
+
+    <div class="container">
+        <div style="position: sticky; top: 0; background: rgba(255,255,255,0.9); z-index: 10; padding-bottom: 5px;">
+            <h2>Customize your cake</h2>
+            <p>Tell us about your perfect cake</p>
+        </div>
 
         <form action="order.html" method="GET">
-            
             <div class="form-row">
                 <div class="form-group">
-                    <label>FULL NAME *</label>
-                    <input type="text" name="name" placeholder="e.g. Nisma" required>
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="Your Name" required>
                 </div>
                 <div class="form-group">
-                    <label>PHONE NUMBER *</label>
-                    <input type="tel" name="phone" placeholder="10-digit mobile" required>
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" placeholder="Mobile Number" required>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>CAKE FLAVOUR *</label>
-                    <select name="flavour" id="flavour" required onchange="updatePrice()">
-                        <option value="" disabled selected>— Select Flavour —</option>
-                        <option value="Chocolate 🍫">🍫 Chocolate</option>
-                        <option value="Vanilla 🍦">🍦 Vanilla</option>
-                        <option value="Red Velvet ❤️">❤️ Red Velvet</option>
-                        <option value="Butterscotch 🍬">🍬 Butterscotch</option>
-                        <option value="Strawberry 🍓">🍓 Strawberry</option>
-                        <option value="Black Forest 🌲">🌲 Black Forest</option>
-                        <option value="Pineapple 🍍">🍍 Pineapple</option>
+                    <label>Cake Flavour</label>
+                    <select name="flavour" id="flavour" required onchange="calculatePrice()">
+                        <option value="Chocolate 🍫">Chocolate 🍫</option>
+                        <option value="Vanilla 🍦">Vanilla 🍦</option>
+                        <option value="Red Velvet ❤️">Red Velvet ❤️</option>
+                        <option value="Strawberry 🍓">Strawberry 🍓</option>
+                        <option value="Pineapple 🍍">Pineapple 🍍</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>CAKE SIZE *</label>
-                    <select name="size" id="size" required onchange="updatePrice()">
-                        <option value="" disabled selected>— Select Size —</option>
+                    <label>Size (kg)</label>
+                    <select name="size" id="size" required onchange="calculatePrice()">
                         <option value="0.5">0.5 kg</option>
-                        <option value="1">1 kg</option>
-                        <option value="1.5">1.5 kg</option>
+                        <option value="1" selected>1 kg</option>
                         <option value="2">2 kg</option>
                         <option value="3">3 kg</option>
-                        <option value="4">4 kg</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>OCCASION *</label>
+                    <label>Occasion</label>
                     <select name="occasion" required>
-                        <option value="" disabled selected>— Select Occasion —</option>
                         <option>Birthday 🎉</option>
                         <option>Wedding 💍</option>
                         <option>Anniversary ❤️</option>
-                        <option>Baby Shower 👶</option>
-                        <option>Graduation 🎓</option>
                         <option>Other 🎂</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>DELIVERY DATE *</label>
+                    <label>Delivery Date</label>
                     <input type="date" name="date" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>MESSAGE ON CAKE</label>
-                <textarea name="message" placeholder="e.g. Happy Birthday Nisma! ❤️" rows="3"></textarea>
+                <label>Message on Cake</label>
+                <textarea name="message" placeholder="e.g. Happy Birthday Nisma!" rows="3"></textarea>
             </div>
 
             <div class="price-display">
-                Estimated Price: <span id="totalPrice">₹0</span>
+                Estimated Total: <span id="priceTag">₹500</span>
             </div>
 
-            <div class="button-group">
-                <button type="submit">Next: Review Details</button>
-            </div>
+            <button type="submit">Review & Confirm</button>
         </form>
+
+        <a href="index.html" style="display: block; text-align: center; margin-top: 20px; color: #999; text-decoration: none; font-size: 12px; font-weight: 600;">
+            ← CANCEL
+        </a>
     </div>
 
     <script>
-        function updatePrice() {
-            const flavourRates = {
-                "Chocolate 🍫": 500, "Vanilla 🍦": 450, "Red Velvet ❤️": 600,
-                "Butterscotch 🍬": 550, "Strawberry 🍓": 500, "Black Forest 🌲": 550, "Pineapple 🍍": 450
-            };
+        function calculatePrice() {
             const flavour = document.getElementById('flavour').value;
-            const size = parseFloat(document.getElementById('size').value) || 0;
-
-            if (flavour && size) {
-                let total = (flavourRates[flavour] * size);
-                document.getElementById('totalPrice').innerText = "₹" + total;
-            } else {
-                document.getElementById('totalPrice').innerText = "—";
-            }
+            const size = parseFloat(document.getElementById('size').value);
+            
+            const flavourRates = {
+                "Chocolate 🍫": 500,
+                "Vanilla 🍦": 400,
+                "Red Velvet ❤️": 600,
+                "Strawberry 🍓": 500,
+                "Pineapple 🍍": 450
+            };
+            
+            const total = flavourRates[flavour] * size;
+            document.getElementById('priceTag').innerText = "₹" + total;
         }
+
+        // Initialize price on load
+        window.onload = calculatePrice;
     </script>
 </body>
 </html>

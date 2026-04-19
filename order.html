@@ -3,76 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirm Your Order - Sweet Bliss</title>
+    <title>Review Your Order - Sweet Bliss</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
-    <div class="container">
-        <h2>Confirm Your Order</h2>
-        <p>Please review your details to ensure everything is perfect!</p>
 
-        <div class="order-summary" id="receipt">
-            <div class="summary-item"><strong>Customer:</strong> <span id="res-name"></span></div>
-            <div class="summary-item"><strong>Phone:</strong> <span id="res-phone"></span></div>
-            <hr>
-            <div class="summary-item"><strong>Flavour:</strong> <span id="res-flavour"></span></div>
-            <div class="summary-item"><strong>Size:</strong> <span id="res-size"></span></div>
-            <div class="summary-item"><strong>Occasion:</strong> <span id="res-occasion"></span></div>
-            <div class="summary-item"><strong>Date:</strong> <span id="res-date"></span></div>
-            <div class="summary-item"><strong>Message:</strong> <span id="res-message"></span></div>
+    <div class="container">
+        <h2>Review Your Order</h2>
+        <p>Almost there! Check your details before we start baking.</p>
+
+        <div class="visualizer-card" style="text-align: left; line-height: 1.8;">
+            <div style="border-bottom: 1px dashed #ff4d88; margin-bottom: 15px; padding-bottom: 10px;">
+                <label>Customer Details</label>
+                <p style="text-align: left; margin: 0; color: #333;">
+                    <strong>Name:</strong> <span id="res-name"></span><br>
+                    <strong>Phone:</strong> <span id="res-phone"></span>
+                </p>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>Cake Specifications</label>
+                <p style="text-align: left; margin: 0; color: #333;">
+                    <strong>Flavour:</strong> <span id="res-flavour"></span><br>
+                    <strong>Size:</strong> <span id="res-size"></span> kg<br>
+                    <strong>Occasion:</strong> <span id="res-occasion"></span><br>
+                    <strong>Delivery Date:</strong> <span id="res-date"></span>
+                </p>
+            </div>
+
+            <div>
+                <label>Custom Message</label>
+                <p style="text-align: left; margin: 0; color: #ff4d88; font-style: italic;">
+                    "<span id="res-message"></span>"
+                </p>
+            </div>
+        </div>
+
+        <div class="price-display">
+            Final Amount: <span id="res-total">₹0</span>
         </div>
 
         <div class="button-group">
-            <button onclick="placeOrder()">Place Order Now</button>
-            <button onclick="history.back()" class="secondary-btn" style="background: #f0f0f0; color: #666; margin-top: 12px; box-shadow: none;">Edit My Selection</button>
+            <button onclick="confirmAndSave()">Confirm & Place Order</button>
+            <button onclick="history.back()" style="background: #666; margin-top: 12px; box-shadow: none;">
+                Edit Selection
+            </button>
         </div>
     </div>
 
     <script>
-        // Logic to extract data from the URL and display it
-        const urlParams = new URLSearchParams(window.location.search);
+        // 1. Get Data from URL
+        const params = new URLSearchParams(window.location.search);
         
-        document.getElementById('res-name').innerText = urlParams.get('name') || "Not provided";
-        document.getElementById('res-phone').innerText = urlParams.get('phone') || "Not provided";
-        document.getElementById('res-flavour').innerText = urlParams.get('flavour') || "Not selected";
-        document.getElementById('res-size').innerText = urlParams.get('size') ? urlParams.get('size') + " kg" : "Not selected";
-        document.getElementById('res-occasion').innerText = urlParams.get('occasion') || "Not selected";
-        document.getElementById('res-date').innerText = urlParams.get('date') || "Not selected";
-        document.getElementById('res-message').innerText = urlParams.get('message') || "None";
+        // 2. Pricing Logic (Match this with customize.html)
+        const rates = {
+            "Chocolate 🍫": 500,
+            "Vanilla 🍦": 400,
+            "Red Velvet ❤️": 600,
+            "Butterscotch 🍬": 550,
+            "Strawberry 🍓": 500,
+            "Black Forest 🌲": 550,
+            "Pineapple 🍍": 450
+        };
 
-        function placeOrder() {
-            // In a real app, this is where you'd send data to a database
-            alert("🎉 Your order has been placed! We will contact you shortly.");
+        const flavour = params.get('flavour') || "Chocolate 🍫";
+        const size = parseFloat(params.get('size')) || 1;
+        const totalPrice = rates[flavour] * size;
+
+        // 3. Fill the Page
+        document.getElementById('res-name').innerText = params.get('name') || "Guest";
+        document.getElementById('res-phone').innerText = params.get('phone') || "N/A";
+        document.getElementById('res-flavour').innerText = flavour;
+        document.getElementById('res-size').innerText = size;
+        document.getElementById('res-occasion').innerText = params.get('occasion') || "Celebration";
+        document.getElementById('res-date').innerText = params.get('date') || "Today";
+        document.getElementById('res-message').innerText = params.get('message') || "No message";
+        document.getElementById('res-total').innerText = "₹" + totalPrice;
+
+        // 4. Save to LocalStorage and Redirect
+        function confirmAndSave() {
+            // Create Order Object
+            const newOrder = {
+                id: "SB-" + Math.floor(Math.random() * 9000 + 1000),
+                date: new Date().toLocaleDateString(),
+                customer: params.get('name'),
+                flavour: flavour,
+                size: size,
+                total: "₹" + totalPrice,
+                status: "Pending" // Initial status for History page
+            };
+
+            // Get existing orders
+            let orderHistory = JSON.parse(localStorage.getItem('cakeOrders')) || [];
+            
+            // Add new order to top of list
+            orderHistory.unshift(newOrder);
+            
+            // Save back to storage
+            localStorage.setItem('cakeOrders', JSON.stringify(orderHistory));
+
+            // Success feedback
+            alert("🎉 Success! Your order " + newOrder.id + " has been recorded.");
             window.location.href = "success.html";
         }
     </script>
 
-    <style>
-        /* Extra styles specifically for this page summary */
-        .order-summary {
-            background: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-        .summary-item {
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
-        .summary-item strong {
-            color: #ff4d88;
-        }
-        hr {
-            border: none;
-            border-top: 1px dashed #ddd;
-            margin: 12px 0;
-        }
-    </style>
 </body>
 </html>
